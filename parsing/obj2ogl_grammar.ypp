@@ -1,0 +1,66 @@
+
+
+%{
+#include <iostream>
+using namespace std;
+extern int yylex();
+extern void yyerror(char*);
+#pragma clang diagnostic ignored "-Wwritable-strings"
+%}
+
+%token tFLOAT
+%token tVERTEX tVERTEX_PARAM tVERTEX_INDEX   tVERTEX_NORMAL tTEXTURE_COORD
+%token tMATERIAL_NAME tOBJECT_NAME tUSE_MATERIAL tSMOOTH tGROUP_NAME
+%token tNUMBER tINTEGER
+%token tSTRING_VALUE
+%token tEOL
+%token tDOUBLE_SLASH tSLASH
+
+%%
+
+file: line
+	  | file line
+
+line: vertex {  }
+	  | material {  }
+	  | object
+	  | vertex_param
+	  | usematerial
+	  | index
+	  | vertex_normal
+	  | smooth
+	  | texture
+	  ;
+
+vertex:	tVERTEX vec3 {  };
+
+
+material:		tMATERIAL_NAME str { };
+usematerial: 	tUSE_MATERIAL str {};
+index: 			tVERTEX_INDEX indiceslist {}
+vertex_param:	tVERTEX_PARAM vec3 {};
+vertex_normal: 	tVERTEX_NORMAL vec3 {};
+smooth: 		tSMOOTH str {};
+texture:		tTEXTURE_COORD vec2 {}
+				| tTEXTURE_COORD vec3 {}
+
+vec2:	tNUMBER tNUMBER {  };
+vec3:	tNUMBER tNUMBER tNUMBER {  };
+str:			tSTRING_VALUE
+indiceslist: indices1
+			 | indices2
+			 | indices3
+			 | indices2x
+			 | indiceslist indices1
+			 | indiceslist indices2
+			 | indiceslist indices3
+			 | indiceslist indices2x;
+indices1: tINTEGER
+indices2: tINTEGER tSLASH tINTEGER {  };
+indices3: tINTEGER tSLASH tINTEGER tSLASH tINTEGER {  };
+indices2x: tINTEGER tDOUBLE_SLASH tINTEGER {  };
+
+//
+object:			tOBJECT_NAME tSTRING_VALUE;
+
+%%
