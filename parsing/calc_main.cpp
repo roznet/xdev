@@ -12,8 +12,13 @@ void yyerror(char*s){
 }
 
 int main(int argc, char * argv[] ){
-	//parse_string( "2*3+2");
+	parse_string( "2*3+2\n");
 	yyparse();
 
+	cout << "CPP: " << root->value() << endl;
+	
+	parse_string( "3*2+6\n");
+	yyparse();
+	
 	cout << "CPP: " << root->value() << endl;
 }
