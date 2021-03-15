@@ -1,11 +1,13 @@
-### Reference
+# build:
 
-https://littleosbook.github.io/
-http://littleosbook.github.com/files/stage2_eltorito
+docker build buildenv -t kernel-buildenv
 
-http://www.jamesmolloy.co.uk/tutorial_html/
-https://github.com/berkus/jamesm-tutorials
+docker run --rm -it -v "${PWD}:/usr/bld" kernel-buildenv
 
-### Setup
+cleanup
+docker rmi kernel-buildenv -f
 
-sudo apt-get install build-essential nasm genisoimage bochs bochs-sdl
+
+# run emulator
+
+qemu-system-i386 -cdrom os.iso

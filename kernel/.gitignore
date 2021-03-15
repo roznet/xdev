@@ -1,6 +1,2 @@
-*.bin
-*.o
-*.iso
-*.elf
-*.log
-Makefile.bak
+obj
+os.iso
