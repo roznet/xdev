@@ -16,7 +16,7 @@ AS = nasm
 ASFLAGS = -f elf
 
 .PHONY: all
-all: directories $(TARGETDIR)/kernel.elf
+all: directories os.iso
 
 .PHONY: directories
 
@@ -35,7 +35,7 @@ os.iso: $(TARGETDIR)/kernel.elf
 	grub-mkrescue /usr/lib/grub/i386-pc -o os.iso iso
 
 run: os.iso
-	bochs -f bochsrc.txt -q
+	qemu-system-i386 -cdrom os.iso
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) $< -o $@
