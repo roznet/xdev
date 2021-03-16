@@ -18,11 +18,12 @@ typedef struct {
 } page_table_t;
 
 typedef struct {
-    page_t * tables[1024];
+    page_table_t * tables[1024];
     uint32_t tablesPhysical[1024];
     uint32_t physicalAddr;
+
 } page_directory_t;
 
-void initialiase_paging();
+void initialise_paging();
 
 #endif

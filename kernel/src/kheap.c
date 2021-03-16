@@ -2,7 +2,7 @@
 extern uint32_t end;
 uint32_t placement_address = NULL;
 
-uint32_t kmalloc_ap( uint32_t sz, int align, uint32_t * phys)
+uint32_t kmalloc_full( uint32_t sz, int align, uint32_t * phys)
 {
     if( placement_address == NULL)
     {
@@ -22,12 +22,17 @@ uint32_t kmalloc_ap( uint32_t sz, int align, uint32_t * phys)
     return tmp;
 }
 
+uint32_t kmalloc_ap( uint32_t sz, uint32_t * phys){
+  return kmalloc_full(sz, 1, phys);
+}
+
 uint32_t kmalloc_a( uint32_t sz )
 {
-    return kmalloc_ap( sz, 1, NULL);
+    return kmalloc_full( sz, 1, NULL);
 }
+
 
 uint32_t kmalloc( uint32_t sz )
 {
-    return kmalloc_ap( sz, 0, NULL );
+    return kmalloc_full( sz, 0, NULL );
 }
