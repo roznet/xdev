@@ -6,13 +6,20 @@ uint16_t * video_memory = (uint16_t*)0xB8000;
 uint8_t color_fg = 15;
 uint8_t color_bg = 0; // black
 
-static void move_cursor()
-{
-    uint16_t cursorLocation = cursor_y * 80 + cursor_x;
-    outb(0x3D4, 14);
-    outb(0x3D5, cursorLocation >> 8);
-    outb(0x3D4, 15);
-    outb(0x3D5, cursorLocation);
+void enable_cursor(uint8_t cursor_start, uint8_t cursor_end) {
+  outb(0x3D4, 0x0A);
+  outb(0x3D5, (inb(0x3D5) & 0xC0) | cursor_start);
+
+  outb(0x3D4, 0x0B);
+  outb(0x3D5, (inb(0x3D5) & 0xE0) | cursor_end);
+}
+
+static void move_cursor() {
+  uint16_t cursorLocation = cursor_y * 80 + cursor_x;
+  outb(0x3D4, 14);
+  outb(0x3D5, cursorLocation >> 8);
+  outb(0x3D4, 15);
+  outb(0x3D5, cursorLocation);
 }
 
 static void scroll()
@@ -77,7 +84,7 @@ void monitor_clear()
 {
     uint8_t attributeByte = (color_bg << 4) | (color_fg & 0x0F);
     uint16_t blank = 0x20 | (attributeByte << 8);
-
+    enable_cursor(0,15);
     int i;
     for( i=0; i < 80*25; i++)
     {
