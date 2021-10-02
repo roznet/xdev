@@ -27,6 +27,7 @@ void describe_multiboot2_tag(multiboot2_info_tag_t *tag) {
     multiboot2_info_module_t *module = (multiboot2_info_module_t *)tag;
     printf("tag %i module [%x %x]: %s\n", tag->type, module->mod_start, module->mod_end,
            module->module_name);
+    printf("data = %s\n", module->mod_start);
     break;
   }
   default:

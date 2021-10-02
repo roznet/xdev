@@ -26,12 +26,15 @@ directories:
 $(TARGETDIR)/kernel.elf: $(OBJECTS)
 	ld $(LDFLAGS) $(OBJECTS) -o $(TARGETDIR)/kernel.elf
 
+$(TARGETDIR)/initrd.img:
+	echo "Simple Ram Disk Data" > $@
+
 -include $(CDEP)
 
 .PHONY: depend
 depend: $(CDEP)
 
-os.iso: $(TARGETDIR)/kernel.elf
+os.iso: $(TARGETDIR)/kernel.elf $(TARGETDIR)/initrd.img
 	grub-mkrescue /usr/lib/grub/i386-pc -o os.iso iso
 
 run: os.iso
@@ -47,6 +50,6 @@ $(OBJDIR)/%.d: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -MMD -MF $@ -c $^ -o $(@:.d=.o)
 
 clean:
-	rm -rf os.iso $(OBJDIR)/*.o $(OBJDIR)/*.d $(TARGETDIR)/kernel.elf
+	rm -rf os.iso $(OBJDIR)/*.o $(OBJDIR)/*.d $(TARGETDIR)/kernel.elf $(TARGETDIR)/initrd.img
 
 
