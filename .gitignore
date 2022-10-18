@@ -4,3 +4,4 @@
 *.elf
 *.log
 Makefile.bak
+.DS_Store
